@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.miu.teo.book.cloudnativespring</groupId>
     <artifactId>config-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <name>config-service</name>
     <description>config-service</description>
     <url/>
@@ -41,6 +41,10 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -59,6 +63,27 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <name>${project.name}:${project.version}</name>
+                        <env>
+                            <BP_HEALTH_CHECKER_ENABLED>true</BP_HEALTH_CHECKER_ENABLED>
+                            <BP_JVM_VERSION>17.*</BP_JVM_VERSION> <!-- Equivalent to environment in Gradle -->
+                        </env>
+                        <buildpacks>
+                            <buildpack>urn:cnb:builder:paketo-buildpacks/java</buildpack>
+                            <buildpack>gcr.io/paketo-buildpacks/health-checker:latest</buildpack>
+                        </buildpacks>
+                    </image>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-image</goal> <!-- This goal repackages the JAR into an executable one -->
+                        </goals>
+                        <phase>package</phase> <!-- This binds the plugin execution to the 'package' phase -->
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
