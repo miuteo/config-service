@@ -65,7 +65,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <name>${project.name}:${project.version}</name>
+                        <name>${project.name}:latest</name>
                         <env>
                             <BP_HEALTH_CHECKER_ENABLED>true</BP_HEALTH_CHECKER_ENABLED>
                             <BP_JVM_VERSION>17.*</BP_JVM_VERSION> <!-- Equivalent to environment in Gradle -->
